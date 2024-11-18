@@ -1,26 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import TaskInput from "./TaskInput";
+import TaskList from "./TasksList";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
-
-//create your first component
 const Home = () => {
-	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem("tasks"));
+    if (storedTasks) {
+      setTasks(storedTasks);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  const addTask = (task) => {
+    setTasks([...tasks, task]);
+  };
+
+  const removeTask = (index) => {
+    const updatedTasks = tasks.filter((_, i) => i !== index);
+    setTasks(updatedTasks);
+  };
+
+  return (
+    <div className="main-container">
+		<h1>todos</h1>
+		<div className="tasks-container">
+			<TaskInput addTask={addTask} />
+			<div className="separator"></div>
+			<TaskList tasks={tasks} removeTask={removeTask} />
 		</div>
-	);
+    </div>
+  );
 };
 
 export default Home;
