@@ -5,13 +5,13 @@ const TasksList = ({ tasks, removeTask }) => {
     <>
       <ul>
         {tasks.map((task, index) => (
-            <>
+            <React.Fragment key={task.id}>
                 <li key={index}>
-                    <p>{task}{" "}</p>
-                    <button onClick={() => removeTask(index)}>x</button>
+                    <p>{task.label}{" "}</p>
+                    <button onClick={() => removeTask(task.id)}>x</button>
                 </li>
                 <div  className="separator"></div>
-            </>
+            </React.Fragment>
         ))}
       </ul>
       {tasks.length === 0 ? (
